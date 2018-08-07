@@ -10,6 +10,7 @@ module.exports = {
   // other: require('./other'),
 
   initialize(app) {
+    app.proxy = true;
     app.use(serve(resourcesRoot));
   }
 };

@@ -12,8 +12,8 @@ class OrderModel {
   }
 
   async create(account, order) {
-    order.realIp = '183.48.47.46'; // todo
-    order.actualPrice = 1;
+    //order.realIp = '183.48.47.46';
+    //order.actualPrice = 1;
 
     let model = Object.assign({}, order, {
       accountId: account._id,

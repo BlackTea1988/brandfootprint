@@ -26,8 +26,8 @@ class OrderController {
     nonceCache[nonce] = true;
 
     try {
-      //let payInfo = await ctx.models.order.submit(order);in create
-      let order = await ctx.models.order.create(account, ctx.request.body);
+      let body = Object.assign({}, ctx.request.body, {realIp: ctx.ip});
+      let order = await ctx.models.order.create(account, body);
 
       ctx.body = common.helper.modifyId(order);
     } finally {
