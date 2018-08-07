@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PORT=8080
+PORT=8000
 NODE_ENV=production
 
 pid="`netstat -tlanp | grep LISTEN | grep ${PORT} | sed -r 's/^.+ ([0-9]+)\/.+$/\1/'`"

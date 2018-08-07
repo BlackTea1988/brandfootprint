@@ -22,6 +22,8 @@ class Api {
     router.get('/order/:orderId', controllers.account.mVerifySignIn, controllers.order.getById);
     router.post('/order/mine', controllers.account.mVerifySignIn, controllers.order.queryByAccountId);
 
+    router.all('/notice/pay/wechat', controllers.order.notice);
+
     this.__router__ = router;
   }
 

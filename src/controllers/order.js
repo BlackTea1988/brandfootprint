@@ -2,6 +2,8 @@ const moment = require('moment');
 const createError = require('http-errors');
 const common = require('../common');
 
+const logger = common.helper.createLogger({name: 'ctrl_order'});
+
 const nonceCache = {};
 
 class OrderController {
@@ -47,6 +49,11 @@ class OrderController {
     ctx.body = {
       items: items.map(common.helper.modifyId),
     };
+  }
+
+  async notice(ctx, next) {
+    logger.info(ctx.request.body, '通知');
+    ctx.body = {ok: 1};
   }
 }
 
