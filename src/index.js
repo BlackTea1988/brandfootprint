@@ -11,5 +11,5 @@ new lib.VIPCService({
   controllers: require('./controllers'),
   resource: config.resource,
 }).start()
-  .then(res => console.log(`服务启动成功：http://${res.hostname}:${res.port}`))
+  .then(res => console.log(`服务启动成功：http://${res.hostname || 'localhost'}:${res.port}`))
   .catch(err => console.error(`服务启动失败：`, err));

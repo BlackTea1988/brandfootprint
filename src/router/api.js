@@ -7,6 +7,7 @@ class Api {
     // 旧版接口
     // router.get('/auth/js', controllers.user.js);
     router.post('/account/signin', controllers.account.signIn);
+    router.put('/account/wechat', controllers.account.setWeChatInfo);
 
     router.param('addressId', controllers.address.paramsAddressId);
     router.get('/address/region', controllers.address.region);

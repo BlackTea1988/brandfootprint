@@ -28,19 +28,29 @@ class AccountModel {
     }
   }
 
-  async signInByWeChat(code, info) {
+  async signInByWeChat(code) {
     let {openid, session_key, unionid} = await this[RESOURCES].service.wechat.snsJsCode2Session(code);
     if (!openid || !session_key) throw new Error('微信登录失败');
 
-    const pc = new common.WXBizDataCrypt(configs.account.wechat.AppID, session_key);
+    let selector = {openid};
+    let updater = {
+      $set: {unionid, session_key},
+      $setOnInsert: {token: (new mongodb.ObjectID()).toString()},
+    };
+    let options = {upsert: true, returnOriginal: false};
+
+    let result = await this[ACCOUNT].findOneAndUpdate(selector, updater, options);
+
+    return result.value;
+  }
+
+  async setWeChatInfo(account, info) {
+    const pc = new common.WXBizDataCrypt(configs.account.wechat.AppID, account.session_key);
     let {encryptedData, iv} = info;
     let data = pc.decryptData(encryptedData, iv);
 
-    let selector = {openid};
-    let updater = {
-      $set: {unionid, session_key, wechat: data},
-      $setOnInsert: {token: (new mongodb.ObjectID()).toString()},
-    };
+    let selector = {_id: account._id};
+    let updater = {$set: {wechat: data},};
     let options = {upsert: true, returnOriginal: false};
 
     let result = await this[ACCOUNT].findOneAndUpdate(selector, updater, options);

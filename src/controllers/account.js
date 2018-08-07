@@ -26,6 +26,18 @@ class AccountController {
       wechat: {nickName: account.wechat.nickName},
     };
   }
+  async setWeChatInfo(ctx, next) {
+    const {account} = ctx.state;
+    if (!account) throw new createError.Unauthorized('无效用户');
+
+    let {result} = ctx.request.body;
+
+    let model = await ctx.models.account.setWeChatInfo(account, result);
+
+    ctx.body = {
+      wechat: {nickName: model.wechat.nickName},
+    };
+  }
 }
 
 function setAccountCookies(ctx, account = {}) {
