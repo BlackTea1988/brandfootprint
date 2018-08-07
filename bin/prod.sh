@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+git pull
+
 export PORT=8000
 export NODE_ENV=production
 
@@ -22,3 +24,5 @@ current=`date +%F`
 nohup npm start --brandfootprint </dev/null &>> ./nohup.out.d/${current}-p${PORT} &
 
 echo "process has been started."
+
+ps aux | grep node | grep brandfootprint
