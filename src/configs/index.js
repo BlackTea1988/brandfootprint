@@ -14,9 +14,9 @@ module.exports = {
       NotifyUrl: 'https://api-wechat.brandfootprint.cn/api/notice/pay/wechat',
     },
     wechatEnterprise: {
-      CorpID: 'ww154b45b3c1eb81e1',
-      Token: 'chendongniu_303',
-      EncodingAESKey: 'coUJLDPXEQRtdoEJNcUd7jGk9FzYHTWDKirjJ3wQinx',
+      CorpID: process.env.WECHATEP_CORPID,
+      Token: process.env.WECHATEP_TOKEN,
+      EncodingAESKey: process.env.WECHATEP_ENCODINGAESKEY,
     },
   },
   web: {
