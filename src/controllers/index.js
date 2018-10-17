@@ -3,4 +3,5 @@ module.exports = {
   order: require('./order'),
   account: require('./account'),
   address: require('./address'),
+  wechat: require('./wechat'),
 };

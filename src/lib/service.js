@@ -37,6 +37,7 @@ class VIPCService {
     app.use(middleware.notFound);
     app.use(middleware.exception);
     app.use(middleware.bodyParser);
+    app.use(middleware.xmlBodyParser);
     app.use(middleware.accessControlAllowApi);
     app.use(middleware.inject({models}));
 

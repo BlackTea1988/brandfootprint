@@ -53,7 +53,18 @@ class OrderController {
 
   async notice(ctx, next) {
     logger.info(ctx.request.body, '通知');
-    ctx.body = {ok: 1};
+
+    const xml = ctx.request.body.xml;
+
+    if (xml.return_code !== 'SUCCESS')
+      throw new createError.BadRequest('无效消息');
+
+    ctx.body = [
+      '<xml>',
+      '<return_code><![CDATA[SUCCESS]]></return_code>',
+      '<return_msg><![CDATA[OK]]></return_msg>',
+      '</xml>',
+    ];
   }
 }
 

@@ -15,6 +15,7 @@
     "koa-static": "^5.0.0",
     "moment": "^2.22.2",
     "mongodb": "^3.1.1",
+    "raw-body": "^2.3.3",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "xml": "^1.0.1",

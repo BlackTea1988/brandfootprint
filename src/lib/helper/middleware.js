@@ -1,6 +1,8 @@
 const url = require('url');
 const createError = require('http-errors');
 const koaBodyParser = require('koa-bodyparser');
+
+const xmlBodyParser = require('./xml_body_parser');
 const utils = require('./utils');
 
 const logger = utils.createLogger({name: "lib_middleware"});
@@ -64,6 +66,10 @@ class MiddlewareModel {
         onerror: (err, ctx) => ctx.throw(422, '请求内容格式错误')
       })(ctx, next);
     };
+
+    this.xmlBodyParser = async function (ctx, next) {
+      return await xmlBodyParser()(ctx, next);
+    }
 
   }
 
