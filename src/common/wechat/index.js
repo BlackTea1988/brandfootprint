@@ -1,11 +1,12 @@
+const configs = require('../../configs');
 const WeChatEnterpriseCrypto = require('./crypto_enterprise');
 
 module.exports = {
   crypto: {
     enterprise: new WeChatEnterpriseCrypto({
-      id: 'ww154b45b3c1eb81e1',
-      token: 'chendongniu_303',
-      encodingAESKey: 'coUJLDPXEQRtdoEJNcUd7jGk9FzYHTWDKirjJ3wQinx',
+      id: configs.account.wechatEnterprise.CorpID,
+      token: configs.account.wechatEnterprise.Token,
+      encodingAESKey: configs.account.wechatEnterprise.EncodingAESKey,
     }),
   },
 };

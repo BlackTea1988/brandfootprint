@@ -13,6 +13,11 @@ module.exports = {
       Secret: process.env.WECHATPAY_SECRET,
       NotifyUrl: 'https://api-wechat.brandfootprint.cn/api/notice/pay/wechat',
     },
+    wechatEnterprise: {
+      CorpID: 'ww154b45b3c1eb81e1',
+      Token: 'chendongniu_303',
+      EncodingAESKey: 'coUJLDPXEQRtdoEJNcUd7jGk9FzYHTWDKirjJ3wQinx',
+    },
   },
   web: {
     resourcesRelativePath: 'public',
