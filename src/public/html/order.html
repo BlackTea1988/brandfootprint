@@ -35,7 +35,7 @@
       <ul id="goods">
         <li v-for="goods in order.goods">
           <span class="title">{{ goods.title }}</span>
-          <span class="count">共 {{ goods.count }} 件</span>
+          <span class="count">数量： {{ goods.count }}</span>
         </li>
       </ul>
       <p>订单金额：{{ order.actualPrice / 100 }} 元</p>
