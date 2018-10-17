@@ -89,6 +89,7 @@ class OrderController {
     // 发送微信通知
     await ctx.models.wechat.epSendNotice(order);
 
+    ctx.set('Content-Type', 'application/xml');
     ctx.body = [
       '<xml>',
       '<return_code><![CDATA[SUCCESS]]></return_code>',
