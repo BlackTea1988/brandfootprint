@@ -38,8 +38,8 @@
           <span class="count">共 {{ goods.count }} 件</span>
         </li>
       </ul>
-      <p>订单金额：{{ order.actualPrice % 100 }} 元</p>
-      <p>用户支付：{{ order.payResult.total_fee % 100 }} 元</p>
+      <p>订单金额：{{ order.actualPrice / 100 }} 元</p>
+      <p>用户支付：{{ order.payResult.total_fee / 100 }} 元</p>
     </div>
     <div v-else>
       <h3>找不到订单</h3>
