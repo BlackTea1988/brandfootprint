@@ -17,6 +17,8 @@ module.exports = {
       CorpID: process.env.WECHATEP_CORPID,
       Token: process.env.WECHATEP_TOKEN,
       EncodingAESKey: process.env.WECHATEP_ENCODINGAESKEY,
+      AgentId: process.env.WECHATEP_AGENTID,
+      AgentSecret: process.env.WECHATEP_SECRET,
     },
   },
   web: {
@@ -36,7 +38,11 @@ module.exports = {
       wechatPay: {
         uri: process.env.RICH_RES_SERVICE_WECHATPAY || 'https://api.mch.weixin.qq.com',
         options: {timeout: 10 * 1000},
-      }
+      },
+      wechatEP: {
+        uri: process.env.RICH_RES_SERVICE_WECHATEP || 'https://qyapi.weixin.qq.com',
+        options: {timeout: 10 * 1000},
+      },
     },
   },
 };

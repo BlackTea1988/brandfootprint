@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>订单详情</title>
+  <meta name="renderer" content="webkit">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+  <script src="../js/vue.min.js"></script>
+  <script src="../js/axios.min.js"></script>
+  <style>
+    #goods span.title {
+      float: left;
+      position: relative;
+    }
+    #goods span.count {
+      float: right;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div v-if="!finished">
+      加截中......
+    </div>
+    <div v-else-if="order.id">
+      <p>订单编号：{{ order.id }}</p>
+      <p>收件人　：{{ order.address.username }}</p>
+      <p>收件电话：{{ order.address.mobile }}</p>
+      <p>配送地址：{{ fullAddress }}</p>
+
+      订单详情：
+      <ul id="goods">
+        <li v-for="goods in order.goods">
+          <span class="title">{{ goods.title }}</span>
+          <span class="count">共 {{ goods.count }} 件</span>
+        </li>
+      </ul>
+      <p>订单金额：{{ order.actualPrice % 100 }} 元</p>
+      <p>用户支付：{{ order.payResult.total_fee % 100 }} 元</p>
+    </div>
+    <div v-else>
+      <h3>找不到订单</h3>
+      <p>订单编号：{{ orderId }}</p>
+    </div>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        orderId: location.hash.slice(1),
+        finished: false,
+        order: {
+          goods: [],
+          address: {},
+        }
+      },
+      mounted() {
+        Promise.all([
+          this.flushOrder(),
+        ]).catch(err => console.error('【mounted error】', err))
+          .then(() => this.finished = true);
+      },
+      computed: {
+        fullAddress() {
+          if (!this.order.address) return '';
+          if (!this.order.address.full_region)
+            return this.order.address.address;
+          return [
+            this.order.address.full_region.toString().replace(/、/g, ''),
+            this.order.address.address
+          ].join(' ');
+        },
+      },
+      methods: {
+        flushOrder() {
+          axios
+            .get('/api/order/' + this.orderId)
+            .then(res => this.order = res.data);
+        },
+      },
+    });
+  </script>
+</body>
+</html>

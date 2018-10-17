@@ -30,7 +30,7 @@ class WeChatPay extends lib.BaseApiService {
       // 以下为业务参数
       openid: `${info.openId}`,
       out_trade_no: `${info.orderId}`,
-      total_fee: info.actualPrice,
+      total_fee: 1, //info.actualPrice, // todo: 这是测试的，正式需要改掉 
       spbill_create_ip: info.realIp,
     });
 
@@ -45,7 +45,7 @@ class WeChatPay extends lib.BaseApiService {
 
     let result = await parseStringAsync(xmlResult, {explicitArray: false});
 
-    let expectSign = buildSign(result.xml, configs.account.wechatPay.Secret);
+    let expectSign = common.wechat.buildSign(result.xml, configs.account.wechatPay.Secret);
     if (result.xml.sign !== expectSign) throw new Error('微信小程序下单接口返回数据签名错误');
 
     let appParams = {
@@ -55,7 +55,7 @@ class WeChatPay extends lib.BaseApiService {
       package: `prepay_id=${result.xml.prepay_id}`,
       signType: 'MD5',
     };
-    appParams.paySign = buildSign(appParams, configs.account.wechatPay.Secret);
+    appParams.paySign = common.wechat.buildSign(appParams, configs.account.wechatPay.Secret);
 
     delete appParams.appId;
     return appParams;
@@ -64,21 +64,10 @@ class WeChatPay extends lib.BaseApiService {
 
 module.exports = WeChatPay;
 
-function buildSign(source, appKey) {
-  let stringSignTemp = Object.keys(source)
-    .filter(key => key !== 'sign')
-    .sort()
-    .map(key => [key, source[key]].join('='))
-    .concat([`key=${appKey}`])
-    .join('&');
-
-  return common.helper.md5(stringSignTemp).toUpperCase();
-}
-
 function toXmlDataWithSign(source, appKey) {
   let keyList = Object.keys(source)
     .map(key => buildObject(key, source[key]))
-    .concat([buildObject('sign', buildSign(source, appKey))]);
+    .concat([buildObject('sign', common.wechat.buildSign(source, appKey))]);
 
   return xml({xml: keyList});
 

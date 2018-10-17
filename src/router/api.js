@@ -20,8 +20,9 @@ class Api {
 
     router.param('orderId', controllers.order.paramsOrderId);
     router.post('/order', controllers.account.mVerifySignIn, controllers.order.create);
-    router.get('/order/:orderId', controllers.account.mVerifySignIn, controllers.order.getById);
     router.post('/order/mine', controllers.account.mVerifySignIn, controllers.order.queryByAccountId);
+    router.get('/order/:orderId', controllers.order.getById);
+    router.get('/order/status/list', controllers.order.statusList);
 
     router.get('/wechat/com/message', controllers.wechat.comMessage);
 

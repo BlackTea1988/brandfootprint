@@ -1,6 +1,7 @@
 const moment = require('moment');
 const createError = require('http-errors');
 const common = require('../common');
+const configs = require('../configs');
 
 const logger = common.helper.createLogger({name: 'ctrl_order'});
 
@@ -14,6 +15,19 @@ class OrderController {
     } catch (e) {
       throw new createError.BadRequest('无效订单编号');
     }
+  }
+
+  async statusList() {
+    let orderStatus = common.enum.orderStatus;
+    ctx.body = [
+      [orderStatus.CreateOrder, '等待支付'],
+      [orderStatus.UnifiedOrder, '等待支付'],
+      [orderStatus.CompletePayment, '等待发货'],
+      [orderStatus.CompleteExpress, '等待收货'],
+      [orderStatus.AllFinish, '订单完成'],
+    ].map(list => {
+      return {key: list[0], value: list[1]};
+    });
   }
 
   // 创建订单
@@ -58,6 +72,22 @@ class OrderController {
 
     if (xml.return_code !== 'SUCCESS')
       throw new createError.BadRequest('无效消息');
+
+    let expectedSign = common.wechat.buildSign(xml, configs.account.wechatPay.Secret);
+    if (expectedSign !== xml.sign)
+      throw new createError.Unauthorized('无效签名');
+
+    // 检查订单号是否存在
+    let orderId = new common.helper.ObjectID(xml.out_trade_no);
+    let order = await ctx.models.order.getById(orderId);
+    if (!order)
+      throw new createError.Unauthorized('无效订单');
+
+    // 标记为已支付
+    order = await ctx.models.order.completePayment(order._id, xml);
+
+    // 发送微信通知
+    await ctx.models.wechat.epSendNotice(order);
 
     ctx.body = [
       '<xml>',

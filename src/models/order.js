@@ -1,4 +1,3 @@
-const mongodb = require('mongodb');
 const createError = require('http-errors');
 const configs = require('../configs');
 const common = require('../common');
@@ -36,11 +35,40 @@ class OrderModel {
   }
 
   async getById(orderId) {
-    return await this[ORDER].find({_id: orderId}).next();
+    let order = await this[ORDER].find({_id: orderId}).next();
+    if (order.payResults && order.payResults.length) {
+      order.payResult = order.payResults.reverse()[0];
+      delete order.payResults;
+    }
+    return order;
   }
 
   async queryByAccountId(accountId) {
     return await this[ORDER].find({accountId}).sort({_id: -1}).toArray();
+  }
+
+  async completePayment(orderId, xmlBody) {
+
+    let selector = {
+      _id: orderId,
+      status: common.enum.orderStatus.UnifiedOrder,
+    };
+
+    let updater = {
+      $set: {
+        status: common.enum.orderStatus.CompletePayment,
+      },
+    };
+
+    await this[ORDER].findOneAndUpdate(selector, updater, {returnOriginal: false});
+
+    let result = await this[ORDER].findOneAndUpdate({_id: orderId}, {
+      $push: {
+        payResults: xmlBody,
+      },
+    }, {returnOriginal: false});
+
+    return result.value;
   }
 }
 
