@@ -42,7 +42,7 @@ class OrderModel {
     };
     let updater = {$set: {status: common.enum.orderStatus.CompletePayment}};
     let result = await this[ORDER].findOneAndUpdate(selector, updater, {returnOriginal: false});
-    return result.value ? result.value.status : 0;
+    return { status: result.value ? result.value.status : 0 };
   }
 
   async getById(orderId) {
