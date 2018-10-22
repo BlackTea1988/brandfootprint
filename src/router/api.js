@@ -21,6 +21,7 @@ class Api {
     router.param('orderId', controllers.order.paramsOrderId);
     router.post('/order', controllers.account.mVerifySignIn, controllers.order.create);
     router.post('/order/mine', controllers.account.mVerifySignIn, controllers.order.queryByAccountId);
+    router.put('/order/:orderId/payed', controllers.account.mVerifySignIn, controllers.order.userPayed);
     router.get('/order/:orderId', controllers.order.getById);
     router.get('/order/status/list', controllers.order.statusList);
 

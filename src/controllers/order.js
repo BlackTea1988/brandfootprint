@@ -22,7 +22,8 @@ class OrderController {
     ctx.body = [
       [orderStatus.CreateOrder, '等待支付'],
       [orderStatus.UnifiedOrder, '等待支付'],
-      [orderStatus.CompletePayment, '等待发货'],
+      [orderStatus.CompletePayment, '完成支付'],
+      [orderStatus.ConfirmPayment, '等待发货'],
       [orderStatus.CompleteExpress, '等待收货'],
       [orderStatus.AllFinish, '订单完成'],
     ].map(list => {
@@ -47,6 +48,13 @@ class OrderController {
     } finally {
       delete nonceCache[nonce];
     }
+  }
+
+  async userPayed(ctx, next) {
+    const {account} = ctx.state;
+    if (!account) throw new createError.Unauthorized('无效用户');
+
+    ctx.body = await ctx.models.order.userPayed(ctx.params.orderId, account._id);
   }
 
   async getById(ctx, next) {
