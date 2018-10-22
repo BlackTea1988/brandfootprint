@@ -36,7 +36,7 @@ class OrderModel {
 
   async userPayed(orderId, accountId) {
     let selector = {
-      orderId,
+      _id: orderId,
       accountId,
       status: common.enum.orderStatus.UnifiedOrder,
     };
