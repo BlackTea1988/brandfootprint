@@ -62,12 +62,17 @@ class OrderModel {
 
     let selector = {
       _id: orderId,
-      status: common.enum.orderStatus.UnifiedOrder,
+      status: {
+        $in: [
+          common.enum.orderStatus.UnifiedOrder,
+          common.enum.orderStatus.CompletePayment,
+        ],
+      },
     };
 
     let updater = {
       $set: {
-        status: common.enum.orderStatus.CompletePayment,
+        status: common.enum.orderStatus.ConfirmPayment,
       },
     };
 
