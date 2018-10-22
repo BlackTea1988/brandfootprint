@@ -41,8 +41,9 @@ class OrderModel {
       status: common.enum.orderStatus.UnifiedOrder,
     };
     let updater = {$set: {status: common.enum.orderStatus.CompletePayment}};
-    let result = await this[ORDER].findOneAndUpdate(selector, updater, {returnOriginal: false});
-    return { status: result.value ? result.value.status : 0 };
+    await this[ORDER].findOneAndUpdate(selector, updater, {returnOriginal: false});
+    let order = await this[ORDER].find({_id: orderId}).next();
+    return { status: order ? order.status : 0 };
   }
 
   async getById(orderId) {
