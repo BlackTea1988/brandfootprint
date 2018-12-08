@@ -21,9 +21,12 @@ class AccountController {
     let account = await ctx.models.account.signInByWeChat(code, result);
 
     setAccountCookies(ctx, account);
+
+    let nickName = account.wechat ? account.wechat.nickName : '';
+
     ctx.body = {
       id: account._id,
-      wechat: {nickName: account.wechat.nickName},
+      wechat: {nickName},
     };
   }
   async setWeChatInfo(ctx, next) {
