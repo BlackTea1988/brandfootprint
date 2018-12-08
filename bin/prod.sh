@@ -4,7 +4,7 @@ git pull
 
 source ./env.config
 
-export PORT=8000
+export PORT=7000
 export NODE_ENV=production
 
 pid="`netstat -tlanp | grep LISTEN | grep ${PORT} | sed -r 's/^.+ ([0-9]+)\/.+$/\1/'`"
@@ -23,7 +23,7 @@ mkdir -p ./nohup.out.d
 # 当前日期
 current=`date +%F`
 
-nohup npm start --brandfootprint </dev/null &>> ./nohup.out.d/${current}-p${PORT} &
+nohup npm start -- --brandfootprint </dev/null &>> ./nohup.out.d/${current}-p${PORT} &
 
 echo "process has been started."
 
