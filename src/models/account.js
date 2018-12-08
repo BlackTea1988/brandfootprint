@@ -15,7 +15,7 @@ class AccountModel {
   async initialize() {
     await this[ACCOUNT].createIndexes([
       {key: {openid: 1}, name: 'openid_1', background: true, unique: true},
-      {key: {unionid: 1}, name: 'unionid_1', background: true, unique: true, sparse: true},
+      {key: {unionid: 1}, name: 'unionid_1', background: true, sparse: true},
     ]);
   }
 
