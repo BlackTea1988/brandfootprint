@@ -45,7 +45,8 @@ class WeChatModel {
     let address = order.address;
     let descUrl = `https://api-wechat.brandfootprint.cn/html/order.html#${order._id}`;
     let message = [
-      `【测试】新增一个等待发货的订单`,
+      `新增一个等待发货的订单`,
+      //`【测试】新增一个等待发货的订单`,
       `时间：${moment().format('YYYY-MM-DD HH:mm:ss')}`,
       `用户：${address.username}`,
       `手机：${address.mobile}`,

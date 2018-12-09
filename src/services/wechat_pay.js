@@ -30,7 +30,7 @@ class WeChatPay extends lib.BaseApiService {
       // 以下为业务参数
       openid: `${info.openId}`,
       out_trade_no: `${info.orderId}`,
-      total_fee: 1, //info.actualPrice, // todo: 这是测试的，正式需要改掉
+      total_fee: info.actualPrice,
       spbill_create_ip: info.realIp,
     });
 
